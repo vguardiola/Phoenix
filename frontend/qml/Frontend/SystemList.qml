@@ -1,5 +1,5 @@
-import QtQuick 2.5
-import QtQuick.Controls 1.2
+import QtQuick 2.9
+import QtQuick.Controls 2.2
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
 import QtGraphicalEffects 1.0
@@ -16,9 +16,7 @@ PhxScrollView {
     PhxListView {
         id: listView;
         anchors.fill: parent;
-
         currentIndex: -1;
-
         spacing: 0;
         model: SqlThreadedModel {
             id: sqlModel;
@@ -40,18 +38,13 @@ PhxScrollView {
             }
         }
 
-        // Let the user select the null index as we use that for the "All" button
-        // Otherwise duplicate the default behavior
-        Keys.onUpPressed: {
-            if( listView.currentIndex > -1 )
-                listView.currentIndex--;
+        ScrollBar.vertical: PhxScrollBar {
+            id: vertScrollBar
         }
 
         header: Item {
             anchors { left: parent.left; right: parent.right; }
             height: PhxTheme.common.menuTitleHeight + PhxTheme.common.menuItemHeight;
-
-            // A simple "Systems" label
             Rectangle {
                 id: headerLabel;
                 color: "transparent";
@@ -181,7 +174,6 @@ PhxScrollView {
                 id: delegateMouseArea;
                 anchors.fill: parent;
                 hoverEnabled: true;
-
                 onClicked: if( listView.currentIndex !== index ) listView.currentIndex = index;
             }
         }

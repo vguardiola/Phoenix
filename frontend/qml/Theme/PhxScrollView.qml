@@ -37,7 +37,8 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
+import QtQuick 2.9
+import QtQuick.Controls 2.2
 import Phoenix.Theme 1.0
 
 /*
@@ -49,62 +50,11 @@ import Phoenix.Theme 1.0
    child of this object. In practice, this means that all you need to do is make sure the last child of your
    PhxScrollView is a Flickable.
 */
-
-import QtQuick 2.5
-
 FocusScope {
     property int scrollBarScale: 12;
     property Flickable flickable: children[ children.length - 1 ];
 
-    // Only show the scrollbars when conditions are met
-    states: State {
-        name: "ShowBars";
-        when: flickable.movingVertically || flickable.movingHorizontally ||
-              flickable.verticalVelocity !== 0.0 || flickable.horizontalVelocity !== 0.0 ||
-              verticalScrollBar.backgroundMousedOver || horizontalScrollBar.backgroundMousedOver ||
-              scrollBarHideTimer.running;
-        PropertyChanges { target: verticalScrollBar; opacity: 1; }
-        PropertyChanges { target: horizontalScrollBar; opacity: 1; }
-        PropertyChanges { target: scrollBarHideTimer; running: true; }
-    }
-
-    // Ensures scrollbars will always be visible for at least 2 seconds at a time
-    Timer {
-        id: scrollBarHideTimer;
-        interval: 2000;
-        running: false;
-    }
-
     transitions: Transition {
         NumberAnimation { properties: "opacity"; duration: 250; }
-    }
-
-    // Attach scrollbars to the right and bottom edges of the flickable
-    PhxScrollBar {
-        id: verticalScrollBar;
-        width: scrollBarScale * 2; height: parent.height - ( horizontalScrollBar.visible ? scrollBarScale : 0 );
-        z: flickable.z + 1;
-        visible: flickable.contentHeight > parent.height;
-        enabled: visible;
-        handleWidth: scrollBarScale;
-        anchors.right: parent.right;
-        opacity: 0;
-        orientation: Qt.Vertical;
-        position: isNaN( flickable.visibleArea.yPosition ) ? 0 : flickable.visibleArea.yPosition;
-        pageSize: isNaN( flickable.visibleArea.heightRatio ) ? 0 : flickable.visibleArea.heightRatio;
-    }
-
-    PhxScrollBar {
-        id: horizontalScrollBar;
-        width: parent.width - ( verticalScrollBar.visible ? scrollBarScale : 0 ); height: scrollBarScale * 2;
-        z: flickable.z + 1;
-        visible: flickable.contentWidth > parent.width;
-        enabled: visible;
-        handleHeight: scrollBarScale;
-        anchors.bottom: parent.bottom;
-        opacity: 0;
-        orientation: Qt.Horizontal;
-        position: isNaN( flickable.visibleArea.xPosition ) ? 0 : flickable.visibleArea.xPosition;
-        pageSize: isNaN( flickable.visibleArea.widthRatio ) ? 0 : flickable.visibleArea.widthRatio;
     }
 }

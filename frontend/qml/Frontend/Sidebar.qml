@@ -1,4 +1,4 @@
-import QtQuick 2.5
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtGraphicalEffects 1.0
@@ -25,15 +25,11 @@ Rectangle {
         anchors.bottom: bottomRowContainer.top;
         anchors.left: parent.left;
         anchors.right: parent.right;
-
         SystemList {
             id: systemList;
-
             width: parent.width;
             height: parent.height;
-
             enabled: opacity === 1.0;
-
             opacity: currentItem === this ? 1.0 : 0.0;
             Behavior on opacity { PropertyAnimation { } }
             y: currentItem === this ? 0 : parent.height;

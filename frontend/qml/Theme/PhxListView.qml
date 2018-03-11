@@ -1,18 +1,18 @@
-import QtQuick 2.5
+import QtQuick 2.9
 
 import Phoenix.Theme 1.0
 
 // Set properties here that all ListViews used within Phoenix will set anyway.
-
 ListView {
     id: listView;
     clip: true;
     boundsBehavior: Flickable.StopAtBounds;
     activeFocusOnTab: true;
+    keyNavigationEnabled:true;
+    keyNavigationWraps:true;
 
     // A silly workaround needed because apparently currentItem.y isn't up-to-date when it needs to be?
     property real currentItemOffset: 0;
-
     property bool growOnFocus: true;
     property real growOnFocusValue: growOnFocus ? 12 : 4;
 

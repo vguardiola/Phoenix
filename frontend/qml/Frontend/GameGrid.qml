@@ -1,5 +1,5 @@
-import QtQuick 2.5
-import QtQuick.Controls 1.4
+import QtQuick 2.9
+import QtQuick.Controls 2.0
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
@@ -19,7 +19,6 @@ FocusScope {
     PhxScrollView {
         id: scrollView;
         anchors.fill: parent;
-
         // How much do you add to each grid entry's width so that the sum of a row's widths equal the GridView's width?
         property double addToMargins: 0;
 
@@ -33,6 +32,7 @@ FocusScope {
 
         PhxGridView {
             id: gameGrid;
+            ScrollBar.vertical: PhxScrollBar { }
             anchors {
                 fill: parent;
                 leftMargin: searchBar.anchors.leftMargin; rightMargin: leftMargin;
