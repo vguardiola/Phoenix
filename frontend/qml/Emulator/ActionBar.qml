@@ -31,7 +31,6 @@ Item {
             id: mediaButtonsRow;
             anchors.fill: parent;
             anchors.leftMargin: 10;
-
             // Play - Pause
             Rectangle {
                 anchors { top: parent.top; bottom: parent.bottom; }
@@ -55,6 +54,9 @@ Item {
 
             // Volume
             Item {
+                id: volume;
+                property real savedVolume: 0.0;
+                property bool isMute: false;
                 anchors { top: parent.top; bottom: parent.bottom; }
                 width: 28 + 55;
                 Row {
@@ -83,18 +85,15 @@ Item {
 
                         MouseArea {
                             anchors.fill: parent;
-                            property real savedVolume: 0.0;
                             onClicked: {
                                 // Mute
-                                if( savedVolume === 0.0 ) {
-                                    savedVolume = volumeSlider.value;
+                                if( volume.isMute ) {
+                                    volumeSlider.value = volume.savedVolume;
+                                    volume.isMute = false;
+                                } else {
+                                    volume.savedVolume = volumeSlider.value;
                                     volumeSlider.value = 0.0;
-                                }
-
-                                // Unmute
-                                else {
-                                    volumeSlider.value = savedVolume;
-                                    savedVolume = 0.0;
+                                    volume.isMute = true;
                                 }
                             }
                         }
@@ -108,7 +107,12 @@ Item {
                         minimumValue: 0;
                         maximumValue: 1;
                         value: gameConsole.volume;
-                        onValueChanged: gameConsole.volume = value;
+                        onValueChanged: function() {
+                            gameConsole.volume = value;
+                            if(gameConsole.volume>0.0) {
+                                volume.isMute = false;
+                            }
+                        }
                         stepSize: 0.01;
                         activeFocusOnPress: true;
                         focus: false;
@@ -118,7 +122,7 @@ Item {
                             handle: Item {
                                 height: 12;
                                 width: 4;
-                                Rectangle { id: handleRectangle; anchors.fill: parent; color: "white"; }
+                                Rectangle { id: handleRectangle; anchors.fill: parent; color: "#FFFFFF"; }
                             }
 
                             groove: Item {
